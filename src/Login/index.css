@@ -1,0 +1,45 @@
+form {
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+input {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 20rem;
+}
+
+button {
+    padding: 0.75rem;
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 22rem;
+}
+
+.container {
+    height: 100vh;
+}
+
+.card {
+    width: 350px;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.toggle-text {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.link {
+    cursor: pointer;
+    text-decoration: underline;
+}
