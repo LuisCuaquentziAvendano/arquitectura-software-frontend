@@ -1,37 +1,31 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { API_URL, formatError } from '../utils';
+import { useNavigate } from 'react-router-dom';
 import './index.css';
-import { getApiUrl, statusOk } from '../utils';
-import { Link } from 'react-router-dom';
 
 function Login() {
   const [isSignup, setIsSignup] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = isSignup
+    const body = isSignup
       ? { name, email, password }
       : { email, password };
     const url = isSignup
-      ? `${getApiUrl()}/users/signup`
-      : `${getApiUrl()}/users/login`
-    try {
-      console.log(getApiUrl());
-      const res = await axios.post(url, payload);
-      if (!statusOk(res.status)) {
-        if (res.status == 400)
-          alert('Contraseña inválida');
-        if (res.status == 401)
-          alert('Email o contraseña inválida');
-        return;
-      }
+      ? `${API_URL}/users/signup`
+      : `${API_URL}/users/login`
+    axios.post(url, body)
+    .then(res => {
       localStorage.setItem('authorization', `Bearer ${res.data.authorization}`);
-    } catch (error) {
-      console.error(error);
-    }
+      navigate('/games');
+    }).catch((res: AxiosError) => {
+      formatError(res);
+    });
   };
 
   return (
@@ -63,11 +57,9 @@ function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Link to="/games">
-            <button type='submit'>
-              {isSignup ? 'Sign Up' : 'Login'}
-            </button>
-          </Link>
+          <button type='submit'>
+            {isSignup ? 'Sign Up' : 'Login'}
+          </button>
         </form>
         <p className='toggle-text'>
           {isSignup ? 'Already have an account?' : 'Don\'t have an account?'}{' '}

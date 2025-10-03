@@ -1,0 +1,38 @@
+.main-container {
+    width: 100%;
+}
+
+.boxes-container {
+    width: 100%;
+    gap: 1rem;
+
+    .row {
+        gap: 1rem;
+
+        button {
+            width: min(20vw, 20vh);
+            aspect-ratio: 1 / 1;
+            background-color: white;
+            border-radius: 0;
+            padding: 0;
+            
+            img {
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                object-fit: cover;
+            }
+        }
+
+        button.active:hover {
+            background-color: #d2c6c6;
+        }
+
+        button.active:active {
+            background-color: #c2afaf;
+        }
+
+        button.highlight {
+            border: 10px green solid;
+        }
+    }
+}

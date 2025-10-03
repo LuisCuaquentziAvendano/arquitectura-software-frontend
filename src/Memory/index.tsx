@@ -1,95 +1,121 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { getApiUrl, statusOk } from "../utils";
+import axios, { AxiosError } from "axios";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { API_URL, formatError } from "../utils";
+import "./index.css";
 
-export interface MemoryGameState {
+interface MemoryGame {
   shownCards: number[];
   moves: number;
   isEndOfGame: boolean;
   gameTime: string;
 }
 
-export const UNKNOWN_CARD = -1;
+const UNKNOWN_CARD = -1;
 
-async function Memory() {
-  let createdGame = {} as MemoryGameState;
+function Memory() {
+  const authorization = localStorage.getItem("authorization");
+  const [game, setGame] = useState<MemoryGame>({
+    gameTime: "",
+    isEndOfGame: false,
+    moves: 0,
+    shownCards: [],
+  });
+  const [cardsBlocked, setCardsBlocked] = useState(false);
 
-  try {
-    console.log(getApiUrl());
-    const pairs = 10;
-    const authorization = localStorage.getItem('authorization');
-    const res = await axios.post(
-      `${getApiUrl()}/memory/start-game`,
-      { pairs },
-      { headers: { authorization } },
-    );
-    createdGame = res.data;
-    if (!statusOk(res.status)) {
-      alert('Something went wrong');
+  useEffect(() => {
+    if (!authorization)
       return;
-    }
-  } catch (error) {
-    console.error(error);
-    return;
+    const initialize = async () => {
+      try {
+        const pairs = await getPairsNumber();
+        if (!pairs)
+          return;
+        const res = await axios.post(
+          `${API_URL}/memory/start-game`,
+          { pairs: Number(pairs) },
+          { headers: { authorization } },
+        );
+        setGame(res.data);
+      } catch (error) {
+        formatError(error as AxiosError);
+      }
+    };
+    initialize();
+  }, [authorization]);
+
+  const getPairsNumber = async () => {
+    return Swal.fire({
+      text: "¿Con cuántos pares de cartas quieres jugar?",
+      input: "number",
+      showCancelButton: true,
+      icon: "question",
+      inputValidator: (value) => {
+        if (!value || isNaN(Number(value)) || Number(value) <= 0)
+          return "Debes ingresar un número positivo";
+        return null;
+      },
+    }).then((result) => result.value);
   }
 
-  const [game, setGame] = useState<MemoryGameState>(createdGame);
-
-  const postCardClick = (index: number) => {
-    const updatedGame = { ...game };
-    const card = 2;
-    updatedGame.shownCards[index] = card;
-    return updatedGame;
+  const handleCardClick = (index: number) => {
+    setCardsBlocked(true);
+    axios
+      .post(
+        `${API_URL}/memory/play-turn`,
+        { position: index },
+        { headers: { authorization: authorization } }
+      )
+      .then((res) => {
+        showHideCard(index, res.data.card);
+      })
+      .catch((res: AxiosError) => {
+        formatError(res);
+        setCardsBlocked(false);
+      });
   };
 
-  const handleCardClick = async (index: number) => {
-    if (game.isEndOfGame) return;
-    if (game.shownCards[index] !== UNKNOWN_CARD) return;
-    try {
-      const updatedGame = await postCardClick(index);
-      setGame(updatedGame);
-    } catch (err) {
-      console.error("Error playing turn", err);
-    }
-  };
-
-  const renderCard = (value: number, index: number) => {
-    const isHidden = value === UNKNOWN_CARD;
-    return (
-      <button
-        key={index}
-        className={`w-16 h-16 flex items-center justify-center 
-          border rounded-lg text-xl font-bold 
-          ${isHidden ? "bg-gray-400" : "bg-blue-300"}
-        `}
-        onClick={() => handleCardClick(index)}
-        disabled={game.isEndOfGame}
-      >
-        {isHidden ? "?" : value}
-      </button>
-    );
+  const showHideCard = (index: number, value: number) => {
+    const updatedGame = JSON.parse(JSON.stringify(game));
+    updatedGame.shownCards[index] = value;
+    setGame(updatedGame);
+    setTimeout(() => {
+      axios
+        .get(`${API_URL}/memory/game-status`, {
+          headers: { authorization: authorization },
+        })
+        .then((res) => {
+          setGame(res.data);
+          setCardsBlocked(false);
+        })
+        .catch((res: AxiosError) => {
+          formatError(res);
+        });
+    }, 2000);
   };
 
   return (
-    <div className="flex flex-col items-center gap-6">
-      <div className="flex justify-between w-full max-w-md text-lg font-semibold">
-        <span>Moves: {game.moves}</span>
-        <span>Time: {game.gameTime}</span>
+    <div className="main-container horizontal-flex">
+      <div>
+        <span>Movimientos: {game.moves}</span>
       </div>
-
-      <div
-        className="grid gap-3"
-        style={{
-          gridTemplateColumns: `repeat(${Math.sqrt(game.shownCards.length)}, 1fr)`,
-        }}
-      >
-        {game.shownCards.map((value, index) => renderCard(value, index))}
+      <div className="cards-container horizontal-flex">
+        {game.shownCards.map((value, index) => {
+          const isCovered = value == UNKNOWN_CARD;
+          return (
+            <button
+              key={index}
+              onClick={() => handleCardClick(index)}
+              disabled={cardsBlocked || !isCovered}
+              className={`${isCovered ? '' : 'highlight'} ${!cardsBlocked && isCovered ? 'active' : ''}`}
+            >
+              {isCovered ? "?" : value}
+            </button>
+          );
+        })}
       </div>
-
       {game.isEndOfGame && (
-        <div className="text-green-600 font-bold text-xl mt-4">
-          🎉 Game Over! You won in {game.moves} moves.
-        </div>
+        <div>🎉 ¡Fin del juego! Ganaste en {game.moves} movimientos</div>
       )}
     </div>
   );

@@ -1,0 +1,34 @@
+.main-container {
+    width: 100%;
+    padding: 2rem;
+    gap: 2rem;
+    box-sizing: border-box;
+}
+
+.cards-container {
+    width: 100%;
+    gap: 2rem;
+    box-sizing: border-box;
+
+    button {
+        background-color: white;
+        color: black;
+        width: 5rem;
+        height: 5rem;
+        font-size: x-large;
+        border: 1px black solid;
+    }
+
+    button.active:hover {
+        background-color: #d2c6c6;
+    }
+
+    button.active:active {
+        background-color: #c2afaf;
+    }
+
+    button.highlight {
+        background-color: green;
+        color: white;
+    }
+}
