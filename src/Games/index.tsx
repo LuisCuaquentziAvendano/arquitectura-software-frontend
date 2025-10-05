@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Header from '../Header';
 import './index.css';
 
 const games = [
@@ -11,8 +12,8 @@ const games = [
 
 function Games() {
   return (
-    <div className='vertical-flex'>
-      <h1>Game Hub</h1>
+    <div className='main-container vertical-flex'>
+      <Header />
       <div className='horizontal-flex games-container'>
         {games.map((game) => {
           return (

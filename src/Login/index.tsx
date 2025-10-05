@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { API_URL, formatError } from '../utils';
 import { useNavigate } from 'react-router-dom';
+import Header from '../Header';
 import './index.css';
 
 function Login() {
@@ -31,7 +32,8 @@ function Login() {
   return (
     <div className='container vertical-flex'>
       <div className='card'>
-        <h1>GAME HUB</h1>
+        <Header />
+        <br />
         <h2>{isSignup ? 'Sign up' : 'Login'}</h2>
         <form onSubmit={handleSubmit} className='vertical-flex'>
           {isSignup && (

@@ -2,6 +2,7 @@ import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { API_URL, formatError } from "../utils";
+import Header from "../Header";
 import "./index.css";
 
 interface MemoryGame {
@@ -95,7 +96,8 @@ function Memory() {
   };
 
   return (
-    <div className="main-container horizontal-flex">
+    <div className="main-container vertical-flex">
+      <Header />
       <div>
         <span>Movimientos: {game.moves}</span>
       </div>

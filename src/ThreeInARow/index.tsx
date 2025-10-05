@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { API_URL, formatError } from "../utils";
+import Header from "../Header";
 import "./index.css";
 
 interface ThreeInARowGame {
@@ -76,6 +77,7 @@ function ThreeInARow() {
 
   return (
     <div className="main-container vertical-flex">
+      <Header />
       <div className="boxes-container vertical-flex">
         {game.board.map((row, rowIndex) => (
           <div key={rowIndex} className="row horizontal-flex">

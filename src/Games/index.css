@@ -1,3 +1,7 @@
+.main-container {
+    padding: 2rem;
+}
+
 .games-container {
     gap: 2rem;
 }
@@ -6,8 +10,8 @@
     color: white;
     text-decoration: none;
     img {
-        width: 200px;
-        height: 200px;
+        width: 150px;
+        height: 150px;
         object-fit: cover;
     }
 }
