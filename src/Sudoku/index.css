@@ -1,0 +1,69 @@
+.sudoku-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* we'll use borders to separate cells */
+}
+
+.sudoku-row {
+  display: flex;
+}
+
+.sudoku-cell {
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 18px;
+  border: 1px solid #bbb; /* thin light border for each cell */
+  background: white;
+  color: black;
+}
+
+.sudoku-cell.fixed {
+  background-color: #e6e6e6;
+  color: black;
+  font-weight: bold;
+}
+
+.sudoku-cell:disabled {
+  background-color: #f5f5f5;
+  color: #000;
+}
+
+/* Thicker separators to mark 3x3 blocks */
+
+/* vertical separators: make right border thicker on every 3rd column */
+.sudoku-row > .sudoku-cell:nth-child(3n) {
+  border-right: 3px solid #444;
+}
+
+/* leftmost column has thick left border */
+.sudoku-row > .sudoku-cell:first-child {
+  border-left: 3px solid #444;
+}
+
+/* horizontal separators: thicker bottom border after every 3rd row */
+.sudoku-row:nth-child(3n) > .sudoku-cell {
+  border-bottom: 3px solid #444;
+}
+
+/* top border for the first row */
+.sudoku-row:first-child > .sudoku-cell {
+  border-top: 3px solid #444;
+}
+
+/* ensure right edge of board is thick */
+.sudoku-row > .sudoku-cell:last-child {
+  border-right: 3px solid #444;
+}
+
+.sudoku-info {
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.sudoku-end {
+  margin-top: 20px;
+  font-weight: bold;
+  color: green;
+}

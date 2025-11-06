@@ -3,6 +3,7 @@ import Login from './Login';
 import Games from './Games';
 import ThreeInARow from './ThreeInARow';
 import Memory from './Memory';
+import Sudoku from './Sudoku';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="/games" element={<Games />} />
       <Route path="/games/three-in-a-row" element={<ThreeInARow />} />
       <Route path="/games/memory" element={<Memory />} />
+      <Route path="/games/sudoku" element={<Sudoku />} />
     </Routes>
   );
 }
