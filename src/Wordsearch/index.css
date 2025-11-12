@@ -1,0 +1,92 @@
+.main-container {
+    width: 100%;
+}
+
+.wordsearch-container {
+    width: 100%;
+    gap: 2rem;
+    align-items: center;
+}
+
+.board {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.cell {
+    width: min(6vw, 6vh);
+    aspect-ratio: 1 / 1;
+    background-color: #222;
+    border: 2px solid #ccc;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.cell:hover {
+    background-color: #777777;
+}
+
+.cell.selected {
+    background-color: #29a2c8;
+    border-color: #0066ff;
+}
+
+.cell.found {
+    background-color: #4caf50;
+    border-color: #2e8b57;
+}
+
+.words-list h3 {
+    color: white;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.words-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pending-word {
+    color: white;
+    background-color: #222;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.found-word {
+    color: black;
+    background-color: #4caf50;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.buttonGrouping button {
+    margin: 0.4rem;
+}
+
+.selected-word {
+    text-align: center;
+    gap: 1rem;
+}
+
+.end-message {
+    font-size: 1.4rem;
+    color: white;
+    font-weight: bold;
+    margin-top: 1rem;
+}

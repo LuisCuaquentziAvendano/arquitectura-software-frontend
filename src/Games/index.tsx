@@ -7,7 +7,7 @@ const games = [
   { name: 'Memorama', url: 'memory', img: '/memory.webp' },
   { name: 'Sudoku', url: 'sudoku', img: '/sudoku.webp' },
   { name: 'Buscaminas', url: 'minesweeper', img: '/minesweeper.webp' },
-  { name: 'Sopa de letras', url: 'word-search', img: '/word-search.png' }
+  { name: 'Sopa de letras', url: 'wordsearch', img: '/word-search.png' }
 ];
 
 function Games() {
