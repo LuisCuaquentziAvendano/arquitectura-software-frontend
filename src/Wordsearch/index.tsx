@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { API_URL, formatError } from "../utils";
 import Header from "../Header";
@@ -15,6 +16,7 @@ interface WordsearchGame {
 
 function Wordsearch() {
     const authorization = localStorage.getItem("authorization");
+    const navigate = useNavigate();
     const [game, setGame] = useState<WordsearchGame>({
         board: [],
         words: [],
@@ -114,6 +116,7 @@ function Wordsearch() {
     return (
         <div className="main-container vertical-flex">
             <Header />
+            <button className="back-button" onClick={() => navigate('/games')}>←</button>
             <div className="wordsearch-container vertical-flex">
                 <div className="board">
                     {game.board.map((row, rowIndex) => (
