@@ -4,6 +4,8 @@ import Games from './Games';
 import ThreeInARow from './ThreeInARow';
 import Memory from './Memory';
 import Sudoku from './Sudoku';
+import Minesweeper from './Minesweeper';
+import Wordsearch from './Wordsearch';
 import Scores from './Scores';
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
       <Route path="/games/three-in-a-row" element={<ThreeInARow />} />
       <Route path="/games/memory" element={<Memory />} />
       <Route path="/games/sudoku" element={<Sudoku />} />
+      <Route path="/games/minesweeper" element={<Minesweeper />} />
+      <Route path="/games/wordsearch" element={<Wordsearch />} />
       <Route path="/scores" element={<Scores />} />
     </Routes>
   );
