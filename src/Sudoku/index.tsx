@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 import { API_URL, formatError } from "../utils";
 import Header from "../Header";
 import "./index.css";
@@ -21,6 +22,7 @@ interface SudokuGame {
 
 const Sudoku = () => {
   const authorization = localStorage.getItem("authorization");
+  const navigate = useNavigate();
   const [game, setGame] = useState<SudokuGame>({
     board: Array.from({ length: 9 }, () => Array(9).fill(null)),
     isEndOfGame: false,
@@ -166,6 +168,7 @@ const Sudoku = () => {
   return (
     <div className="main-container vertical-flex">
       <Header />
+      <button className="back-button" onClick={() => navigate("/games")}>←</button>
       <div className="sudoku-info">
         <span>⏱️ Tiempo: {elapsed}s</span>
       </div>
@@ -181,6 +184,7 @@ const Sudoku = () => {
       {game.isEndOfGame && (
         <div className="sudoku-end">
           🎉 ¡Felicidades! Has completado el Sudoku en {elapsed} segundos.
+          <button className="play-again-button" onClick={() => navigate(0)}>Jugar de Nuevo</button>
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios, { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 import { API_URL, formatError } from "../utils";
 import Header from "../Header";
 import "./index.css";
@@ -16,6 +17,7 @@ const SERVER = 2;
 
 function ThreeInARow() {
   const authorization = localStorage.getItem("authorization");
+  const navigate = useNavigate();
   const [game, setGame] = useState<ThreeInARowGame>({
     board: [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
     isEndOfGame: false,
@@ -75,9 +77,39 @@ function ThreeInARow() {
     return 'Sigue practicando, el robot ha ganado'
   }
 
+  const didUserWin = () => {
+    if (game.winningBoxes.length === 0) return false;
+    const [row, col] = game.winningBoxes[0];
+    return game.board[row][col] === USER;
+  }
+
+  const playAgain = async () => {
+    if (!authorization) return;
+
+    // If user didn't win, refresh the page to start fresh
+    if (!didUserWin()) {
+      window.location.reload();
+      return;
+    }
+
+    // If user won, continue the game to maintain win streak
+    try {
+      const res = await axios.post(
+        `${API_URL}/three-in-a-row/continue-game`,
+        undefined,
+        { headers: { authorization } },
+      );
+      setGame(res.data);
+      setBoxesBlocked(false);
+    } catch (err) {
+      formatError(err as AxiosError);
+    }
+  }
+
   return (
     <div className="main-container vertical-flex">
       <Header />
+      <button className="back-button" onClick={() => navigate("/games")}>←</button>
       <div className="boxes-container vertical-flex">
         {game.board.map((row, rowIndex) => (
           <div key={rowIndex} className="row horizontal-flex">
@@ -99,7 +131,10 @@ function ThreeInARow() {
         ))}
       </div>
       {game.isEndOfGame && (
-        <div>{endOfGameMessage()}</div>
+        <div className="end-game-message">
+          <p>{endOfGameMessage()}</p>
+          <button className="play-again-button" onClick={() => playAgain()}>Jugar de Nuevo</button>
+        </div>
       )}
     </div>
   );

@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { API_URL, formatError } from "../utils";
 import Header from "../Header";
@@ -16,6 +17,7 @@ const UNKNOWN_CARD = -1;
 
 function Memory() {
   const authorization = localStorage.getItem("authorization");
+  const navigate = useNavigate();
   const [game, setGame] = useState<MemoryGame>({
     gameTime: "",
     isEndOfGame: false,
@@ -98,6 +100,7 @@ function Memory() {
   return (
     <div className="main-container vertical-flex">
       <Header />
+      <button className="back-button" onClick={() => navigate("/games")}>←</button>
       <div>
         <span>Movimientos: {game.moves}</span>
       </div>
@@ -117,7 +120,10 @@ function Memory() {
         })}
       </div>
       {game.isEndOfGame && (
-        <div>🎉 ¡Fin del juego! Ganaste en {game.moves} movimientos</div>
+        <div className="end-game-message">
+          <p>🎉 ¡Fin del juego! Ganaste en {game.moves} movimientos</p>
+          <button className="play-again-button" onClick={() => window.location.reload()}>Jugar de Nuevo</button>
+        </div>
       )}
     </div>
   );

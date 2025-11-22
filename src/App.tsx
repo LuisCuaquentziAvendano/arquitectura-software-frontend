@@ -6,6 +6,7 @@ import Memory from './Memory';
 import Sudoku from './Sudoku';
 import Minesweeper from './Minesweeper';
 import Wordsearch from './Wordsearch';
+import Scores from './Scores';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/games/sudoku" element={<Sudoku />} />
       <Route path="/games/minesweeper" element={<Minesweeper />} />
       <Route path="/games/wordsearch" element={<Wordsearch />} />
+      <Route path="/scores" element={<Scores />} />
     </Routes>
   );
 }

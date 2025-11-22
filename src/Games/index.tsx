@@ -14,6 +14,9 @@ function Games() {
   return (
     <div className='main-container vertical-flex'>
       <Header />
+      <Link to="/scores" className="scores-link">
+        Ver Puntuaciones
+      </Link>
       <div className='horizontal-flex games-container'>
         {games.map((game) => {
           return (

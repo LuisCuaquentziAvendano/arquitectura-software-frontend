@@ -19,3 +19,45 @@ body {
     justify-content: center;
     flex-wrap: wrap;
 }
+
+.back-button {
+    width: fit-content;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.back-button:hover {
+    background-color: #1d4ed8;
+}
+
+.play-again-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.play-again-button:hover {
+    background-color: #059669;
+}
+
+.end-game-message {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: #10b981;
+}
