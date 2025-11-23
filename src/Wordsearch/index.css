@@ -1,92 +1,231 @@
+:root {
+  /* valores por defecto (puedes ajustarlos) */
+  --cell-min: 36px;
+  --cell-max: 48px;
+  --cols: 0;
+  --gap: 0.5rem;
+  --board-max-width: 92vw; /* ancho máximo del wrapper */
+}
+
+/* contenedores */
 .main-container {
-    width: 100%;
+  width: 100%;
 }
 
 .wordsearch-container {
-    width: 100%;
-    gap: 2rem;
-    align-items: center;
+  width: 100%;
+  gap: 2rem;
+  align-items: center;
 }
 
+/* info */
+.wordsearch-info {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding: 10px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: white;
+}
+
+/* wrapper: evita overflow-x y permite scroll vertical */
+.board-wrapper {
+  width: min(var(--board-max-width), 850px);
+  height: min(70vh, 750px);
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 2px solid #444;
+  border-radius: 8px;
+  padding: 15px;
+  background: #1a1a1a;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* scrollbar (opcional) */
+.board-wrapper::-webkit-scrollbar {
+  width: 10px;
+}
+.board-wrapper::-webkit-scrollbar-track {
+  background: #222;
+  border-radius: 6px;
+}
+.board-wrapper::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 6px;
+}
+
+/* GRID UNICO PARA TODO EL TABLERO */
 .board {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+  display: grid;
+  width: 100%;
+  gap: var(--gap);
+  /* gridTemplateColumns se setea inline desde React usando --cols */
+  /* fallback si --cols = 0 */
+  grid-template-columns: repeat(var(--cols), minmax(var(--cell-min), 1fr));
+  align-items: stretch;
+  justify-items: center;
+  box-sizing: border-box;
 }
 
-.row {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
+/* celdas */
 .cell {
-    width: min(6vw, 6vh);
-    aspect-ratio: 1 / 1;
-    background-color: #222;
-    border: 2px solid #ccc;
-    border-radius: 0.5rem;
-    font-weight: bold;
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  width: 100%;
+  /* cada columna toma 1fr; la celda ocupa todo el ancho de su columna */
+  aspect-ratio: 1/1;
+  max-width: var(--cell-max);
+  min-width: var(--cell-min);
+  background-color: #2a2a2a;
+  border: 2px solid #555;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  /* tamaño de fuente adaptable */
+  font-size: clamp(0.8rem, 1.8vw, 1.15rem);
+  cursor: pointer;
+  transition: background-color 0.12s, transform 0.09s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-sizing: border-box;
+  padding: 0;
 }
 
-.cell:hover {
-    background-color: #777777;
+/* hover/estados */
+.cell:hover:not(:disabled) {
+  background-color: #3a3a3a;
+  border-color: #777;
 }
 
 .cell.selected {
-    background-color: #29a2c8;
-    border-color: #0066ff;
+  background-color: #29a2c8;
+  border-color: #0066ff;
 }
 
 .cell.found {
-    background-color: #4caf50;
-    border-color: #2e8b57;
+  background-color: #4caf50;
+  border-color: #2e8b57;
+  color: white;
 }
 
+.cell:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* palabras */
 .words-list h3 {
-    color: white;
-    margin-bottom: 8px;
-    text-align: center;
+  color: white;
+  margin-bottom: 8px;
+  text-align: center;
 }
 
 .words-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pending-word,
+.found-word {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
 }
 
 .pending-word {
-    color: white;
-    background-color: #222;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-weight: bold;
+  background-color: #333;
+  border: 2px solid #555;
 }
 
 .found-word {
-    color: black;
-    background-color: #4caf50;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-weight: bold;
+  background-color: #4caf50;
+  border: 2px solid #2e8b57;
+  text-decoration: line-through;
 }
 
-.buttonGrouping button {
-    margin: 0.4rem;
-}
-
+/* selected word box */
 .selected-word {
-    text-align: center;
-    gap: 1rem;
+  color: white;
+  background-color: #2a2a2a;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 2px solid #29a2c8;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
 }
 
+.buttonGrouping {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.buttonGrouping button {
+  padding: 0.7rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+}
+.buttonGrouping button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+.buttonGrouping button:last-child {
+  background-color: #f44336;
+  color: white;
+}
+
+/* mensaje final */
 .end-message {
-    font-size: 1.4rem;
-    color: white;
-    font-weight: bold;
-    margin-top: 1rem;
+  font-size: 1.4rem;
+  color: white;
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  border: 3px solid #4caf50;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* RESPONSIVE: ajustamos mínimas para pantallas pequeñas */
+@media (max-width: 768px) {
+  :root {
+    --cell-min: 28px;
+    --cell-max: 44px;
+  }
+  .board-wrapper {
+    height: 58vh;
+    padding: 12px;
+  }
+  .wordsearch-info {
+    font-size: 0.95rem;
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --cell-min: 24px;
+    --cell-max: 42px;
+  }
+  .board-wrapper {
+    height: 52vh;
+    padding: 10px;
+  }
+  .wordsearch-info {
+    font-size: 0.85rem;
+    gap: 10px;
+  }
+  .buttonGrouping {
+    flex-direction: column;
+  }
 }
