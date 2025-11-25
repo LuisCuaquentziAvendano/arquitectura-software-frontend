@@ -7,19 +7,23 @@ import Sudoku from './Sudoku';
 import Minesweeper from './Minesweeper';
 import Wordsearch from './Wordsearch';
 import Scores from './Scores';
+import AdPopup from './Ad';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/games" element={<Games />} />
-      <Route path="/games/three-in-a-row" element={<ThreeInARow />} />
-      <Route path="/games/memory" element={<Memory />} />
-      <Route path="/games/sudoku" element={<Sudoku />} />
-      <Route path="/games/minesweeper" element={<Minesweeper />} />
-      <Route path="/games/wordsearch" element={<Wordsearch />} />
-      <Route path="/scores" element={<Scores />} />
-    </Routes>
+    <>
+      <AdPopup intervalMinutes={2} />
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/games" element={<Games />} />
+        <Route path="/games/three-in-a-row" element={<ThreeInARow />} />
+        <Route path="/games/memory" element={<Memory />} />
+        <Route path="/games/sudoku" element={<Sudoku />} />
+        <Route path="/games/minesweeper" element={<Minesweeper />} />
+        <Route path="/games/wordsearch" element={<Wordsearch />} />
+        <Route path="/scores" element={<Scores />} />
+      </Routes>
+    </>
   );
 }
 
